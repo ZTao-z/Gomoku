@@ -1,0 +1,51 @@
+#chessBoard {
+    width: 484px;
+    height: 482px;
+    border: 1px solid red;
+    /*background-image: url('../photo/chessboard.png');*/
+    background-repeat: no-repeat;
+    background-size: auto;
+    position: relative;
+    margin: 50px auto;
+}
+
+#chessPositioner {
+    width: 470px;
+    height: 470px;
+    border: 1px solid blue;
+    position: relative;
+    margin: 5px auto;
+    background-color: brown;
+}
+
+#record {
+    width: 200px;
+    height: 300px;
+    border: 1px solid black;
+    position: relative;
+    margin: 20px auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.chess {
+    width: 20px;
+    height: 20px;
+    border: 1px solid;
+    border-radius: 50px;
+    display: inline-block;
+    position: absolute;
+    opacity: 1;
+    cursor: pointer;
+}
+
+
+.blackChess {
+    border-color: black;
+    background-color: black;
+}
+
+.whiteChess {
+    border-color: white;
+    background-color: white;
+}
