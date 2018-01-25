@@ -1,6 +1,7 @@
 var black_or_white = "black";
 var list = document.getElementsByClassName('chess');
 var map;
+var is_win = false;
 
 window.onload = function() {
     chessPlace();
@@ -8,6 +9,7 @@ window.onload = function() {
     for( var i = 0; i < list.length; i++){
         list[i].onclick = operate;
     }
+    is_win = false;
 }
 
 var createMap = function() {
@@ -23,22 +25,24 @@ var createMap = function() {
 var operate = function() {
     //alert($(this).attr("check"));
     var num = parseInt($(this).attr("id"));
-    if($(this).attr("check") === "true")
+    if($(this).attr("check") === "true" || is_win)
         return;
     $(this).attr("check", true);
     
     if(black_or_white == "black"){
-        createRecord("black", num);
+        createRecord("black", checkWinner(1, num));
         $(this).addClass("blackChess");
         black_or_white = "white";
         $("#record").scrollTop(300);
+        //alert(map);
         return;
     }
     else{
-        createRecord("white", num);
+        createRecord("white", checkWinner(0, num));
         $(this).addClass("whiteChess");
         black_or_white = "black";
         $("#record").scrollTop(300);
+        //alert(map);
         return;
     }  
 }
@@ -67,4 +71,61 @@ var createRecord = function(color, num) {
     else
         record.textContent = color + " win!";
     document.getElementById('record').appendChild(record);
+}
+
+var checkWinner = function(color, num) {
+    var col = num%15;
+    var row = (num-col)/15;
+    map[row][col] = color;
+    var count = 1;
+    is_win = checkControl(row, col, color);
+    if(is_win)
+        return -1;
+    else
+        return num;
+}
+
+var checkControl = function(row, col, color) {
+    var tmp = new Array(4);
+    tmp[0] = checkWinnerScan(row, col, color, 0) + checkWinnerScan(row, col, color, 4) - 1;
+    tmp[1] = checkWinnerScan(row, col, color, 1) + checkWinnerScan(row, col, color, 5) - 1;
+    tmp[2] = checkWinnerScan(row, col, color, 2) + checkWinnerScan(row, col, color, 6) - 1;
+    tmp[3] = checkWinnerScan(row, col, color, 3) + checkWinnerScan(row, col, color, 7) - 1;
+    for( var i = 0; i < 4; i++)
+        if(tmp[i] == 5)
+            return true;
+    return false;
+}
+
+var checkWinnerScan = function(row, col, color, state) {
+    if(map[row][col] != color){
+        return 0;
+    }
+    else if(!is_win && state == 0){
+        return 1 + checkWinnerScan(row-1, col, color, 0);
+    }
+    else if(!is_win && state == 1){
+        return 1 + checkWinnerScan(row-1, col+1, color, 1);
+    }
+    else if(!is_win && state == 2){
+        return 1 + checkWinnerScan(row, col+1, color, 2);
+    }
+    else if(!is_win && state == 3){
+        return 1 + checkWinnerScan(row+1, col+1, color, 3);
+    }
+    else if(!is_win && state == 4){
+        return 1 + checkWinnerScan(row+1, col, color, 4);
+    }
+    else if(!is_win && state == 5){
+        return 1 + checkWinnerScan(row+1, col-1, color, 5);
+    }
+    else if(!is_win && state == 6){
+        return 1 + checkWinnerScan(row, col-1, color, 6);
+    }
+    else if(!is_win && state == 7){
+        return 1 + checkWinnerScan(row-1, col-1, color, 7);
+    }
+    else{
+        return 0;
+    }
 }
