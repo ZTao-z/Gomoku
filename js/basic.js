@@ -92,7 +92,7 @@ var checkControl = function(row, col, color) {
     tmp[2] = checkWinnerScan(row, col, color, 2) + checkWinnerScan(row, col, color, 6) - 1;
     tmp[3] = checkWinnerScan(row, col, color, 3) + checkWinnerScan(row, col, color, 7) - 1;
     for( var i = 0; i < 4; i++)
-        if(tmp[i] == 5)
+        if(tmp[i] >= 5)
             return true;
     return false;
 }
