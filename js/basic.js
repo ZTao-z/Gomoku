@@ -80,7 +80,7 @@ var checkWinner = function(color, num) {
     var col = num%15;
     var row = (num-col)/15;
     map[row][col] = color;
-    
+
     var count = 1;
     is_win = checkControl(row, col, color);
     if(is_win)
@@ -90,7 +90,7 @@ var checkWinner = function(color, num) {
 }
 
 var checkControl = function(row, col, color) {
-    var tmp = new Array(4);
+    /*var tmp = new Array(4);
     tmp[0] = checkWinnerScan(row, col, color, 0) + checkWinnerScan(row, col, color, 4) - 1;
     tmp[1] = checkWinnerScan(row, col, color, 1) + checkWinnerScan(row, col, color, 5) - 1;
     tmp[2] = checkWinnerScan(row, col, color, 2) + checkWinnerScan(row, col, color, 6) - 1;
@@ -98,7 +98,13 @@ var checkControl = function(row, col, color) {
     for( var i = 0; i < 4; i++)
         if(tmp[i] >= 5)
             return true;
-    return false;
+    return false;*/
+    if(checkWinnerScan(row, col, color, 0) + checkWinnerScan(row, col, color, 4) - 1 < 5)
+        if(checkWinnerScan(row, col, color, 1) + checkWinnerScan(row, col, color, 5) - 1 < 5)
+            if(checkWinnerScan(row, col, color, 2) + checkWinnerScan(row, col, color, 6) - 1 < 5)
+                if(checkWinnerScan(row, col, color, 3) + checkWinnerScan(row, col, color, 7) - 1 < 5)
+                    return false;
+    return true;
 }
 
 var checkWinnerScan = function(row, col, color, state) {
