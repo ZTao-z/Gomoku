@@ -65,20 +65,24 @@ var pointDirection = function( row, col, matrix) {
 
     //统计部分
     //横线
-    var horizonCheck = horizon.join('');
+    var horizonCheck = 'b'+horizon.join('')+'b';
     //console.log(horizon);
+    //console.log(horizonCheck);
 
     //竖直线
-    var verticalCheck = vertical.join('');
+    var verticalCheck = 'b'+vertical.join('')+'b';
     //console.log(vertical);
+    //console.log(verticalCheck);
 
     //右上斜线
-    var rightTopCheck = rightTop.join('');
+    var rightTopCheck = 'b'+rightTop.join('')+'b';
     //console.log(rightTop);
+    //console.log(rightTopCheck);
 
     //右下斜线
-    var rightDownCheck = rightDown.join('');
+    var rightDownCheck = 'b'+rightDown.join('')+'b';
     //console.log(rightDown);
+    //console.log(rightDownCheck);
     
     return [horizonCheck, verticalCheck, rightTopCheck, rightDownCheck];
 }
@@ -113,6 +117,8 @@ var pointDirection = function( row, col, matrix) {
 
 */
 
+
+//b代表边界，e代表空位，color代表当前颜色，ncolor代表相反的颜色
 var regExpConstructor = function ( chessColor ){
     var regex = new Array(28);
     var color = parseInt(chessColor);
@@ -124,8 +130,8 @@ var regExpConstructor = function ( chessColor ){
     //活四
     regex[1] = new RegExp('e'+color+''+color+''+color+''+color+'e', 'g');
     //眠四
-    regex[2] = new RegExp((ncolor)+''+color+''+color+''+color+''+color+'e', 'g');
-    regex[3] = new RegExp('e'+color+''+color+''+color+''+color+''+(ncolor), 'g');
+    regex[2] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+''+color+''+color+'e', 'g');
+    regex[3] = new RegExp('e'+color+''+color+''+color+''+color+''+('('+ncolor+'|b)'), 'g');
     regex[4] = new RegExp(color+''+color+'e'+color+''+color, 'g');
     regex[5] = new RegExp(color+'e'+color+''+color+''+color, 'g');
     regex[6] = new RegExp(color+''+color+''+color+'e'+color, 'g');
@@ -134,28 +140,28 @@ var regExpConstructor = function ( chessColor ){
     regex[8] = new RegExp('e'+color+'e'+color+''+color+'e', 'g');
     regex[9] = new RegExp('e'+color+''+color+'e'+color+'e', 'g');
     //眠三
-    regex[10] = new RegExp((ncolor)+''+color+''+color+''+color+'e'+'e', 'g');
-    regex[11] = new RegExp('e'+'e'+color+''+color+''+color+''+(ncolor), 'g');
-    regex[12] = new RegExp((ncolor)+''+color+''+color+'e'+color+'e', 'g');
-    regex[13] = new RegExp('e'+color+'e'+color+''+color+''+(ncolor), 'g');
-    regex[14] = new RegExp((ncolor)+''+color+'e'+color+''+color+'e', 'g');
-    regex[15] = new RegExp('e'+color+''+color+'e'+color+''+(ncolor), 'g');
+    regex[10] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+''+color+'e'+'e', 'g');
+    regex[11] = new RegExp('e'+'e'+color+''+color+''+color+''+('('+ncolor+'|b)'), 'g');
+    regex[12] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+color+'e', 'g');
+    regex[13] = new RegExp('e'+color+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
+    regex[14] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+''+color+'e', 'g');
+    regex[15] = new RegExp('e'+color+''+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
     //活二
     regex[16] = new RegExp('e'+'e'+color+color+'e'+'e', 'g');
     regex[17] = new RegExp('e'+color+'e'+color+'e', 'g');
     regex[18] = new RegExp('e'+color+'e'+'e'+color+'e', 'g');
     //眠二
-    regex[19] = new RegExp((ncolor)+''+color+''+color+'e'+'e'+'e', 'g');
-    regex[20] = new RegExp('e'+'e'+'e'+color+''+color+''+(ncolor), 'g');
-    regex[21] = new RegExp((ncolor)+''+color+'e'+color+'e'+'e', 'g');
-    regex[22] = new RegExp('e'+'e'+color+'e'+color+''+(ncolor), 'g');
-    regex[23] = new RegExp((ncolor)+''+color+'e'+'e'+color+'e', 'g');
-    regex[24] = new RegExp('e'+color+'e'+'e'+color+''+(ncolor), 'g');
+    regex[19] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+'e'+'e', 'g');
+    regex[20] = new RegExp('e'+'e'+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
+    regex[21] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+'e'+'e', 'g');
+    regex[22] = new RegExp('e'+'e'+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
+    regex[23] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+'e'+color+'e', 'g');
+    regex[24] = new RegExp('e'+color+'e'+'e'+color+''+('('+ncolor+'|b)'), 'g');
     //活一
     regex[25] = new RegExp('e'+color+'e', 'g');
     //眠一
-    regex[26] = new RegExp((ncolor)+''+color+'e', 'g');
-    regex[27] = new RegExp('e'+color+(ncolor), 'g')
+    regex[26] = new RegExp(('('+ncolor+'|b)')+''+color+'e', 'g');
+    regex[27] = new RegExp('e'+color+('('+ncolor+'|b)'), 'g')
 
     console.log(regex);
     //var a = listStr.match(regex);
@@ -195,7 +201,7 @@ var pointCounter = function( strList, regExpList ){
 			else{
 				count += (size) * judge_standard.BLOCK_ONE;
 			}
-			strList[i].replace(regExpList[j], "--");
+			strList[i].replace(regExpList[j], "-");
 			//console.log(strList[i]);
 		}
 	}
