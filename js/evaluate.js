@@ -8,7 +8,7 @@ var error_state = {
 	error: 'error'
 };
 
-var judge_standard = {
+const judge_standard = {
 	//连五
 	FIVE: 100000,
 	//活四
@@ -123,8 +123,7 @@ var regExpConstructor = function ( chessColor ){
     var regex = new Array(28);
     var color = parseInt(chessColor);
     var ncolor = color == 1? 0 : 1;
-    //console.log(color);
-    //console.log(ncolor);
+
     //连五
     regex[0] = new RegExp(color+''+color+''+color+''+color+''+color, 'g');
     //活四
@@ -163,8 +162,8 @@ var regExpConstructor = function ( chessColor ){
     regex[26] = new RegExp(('('+ncolor+'|b)')+''+color+'e', 'g');
     regex[27] = new RegExp('e'+color+('('+ncolor+'|b)'), 'g')
 
-    console.log(regex);
-    //var a = listStr.match(regex);
+    //console.log(regex);
+
     return regex;
 }
 
@@ -202,7 +201,6 @@ var pointCounter = function( strList, regExpList ){
 				count += (size) * judge_standard.BLOCK_ONE;
 			}
 			strList[i].replace(regExpList[j], "-");
-			//console.log(strList[i]);
 		}
 	}
 	return count;
@@ -227,7 +225,6 @@ function evaluate( matrix ){
 			}
 		}
 	}
-	//console.log(black_value);
-	//console.log(white_value);
+
 	return (black_value - white_value);
 }

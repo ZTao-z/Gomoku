@@ -83,7 +83,10 @@ var checkWinner = function(color, num) {
     map[row][col] = color;
 
     /*测试语句，输出为黑棋与白旗的权值差（black - white）*/
+    console.log(color);
+    console.log(Math.abs(color-1));
     console.log(evaluate(map));
+    console.log(FunctionMaxMin(map, Math.abs(color-1), 4));
     /***********************/
 
     var count = 1;
