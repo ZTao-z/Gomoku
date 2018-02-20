@@ -8,18 +8,20 @@ generateAllNextPossibleMove(wrapBoard(matrix), color) //落子位置函数
 
 const MIN = -4294967295;
 const MAX = 4294967295;
-
+var alpha = 0,
+	beta = 0;
 
 //board 当前棋盘, deep 思考步数
 var FunctionMaxMin = function(board, color, deep) {
 	var best = MIN;
-	var points = generateAllNextPossibleMove(wrapBoard(board), color);
+	//console.log(board);
+	var points = StepGenerator.generateAllNextPossibleMove(StepGenerator.copyAndWrapBoard(board), color);
 	var bestPoints = [];
-	console.log(points);
+	//console.log(points);
 	for(var i = 0; i < points.length; i++){
 		var now_point = points[i];
-		board[now_point[0]][now_point[1]] = color; //电脑下子的颜色
-		var value = min(board, Math.abs(color-1), deep-1);
+		board[now_point[0]][now_point[1]] = color;         //下子的颜色
+		var value = min(board, Math.abs(color-1), alpha, beta, deep-1);
 
 		if(value == best){
 			bestPoints.push(now_point);
@@ -36,47 +38,49 @@ var FunctionMaxMin = function(board, color, deep) {
 	}
 	console.log(bestPoints.length);
 	var result = bestPoints[Math.floor(Math.random() * bestPoints.length)];
-	return result;
+	if(result == undefined)
+		return [];
+	return [result[0]+1, result[1]+1]; //此处是为了方便手动下棋，电脑下棋应当把 +1 部分都去掉，直接return result
 }
 
 //max函数
-var max = function(board, color, deep){
-	var v = evaluate(board);
-	if(deep <= 0)
+var max = function(board, color, alpha, beta, deep){
+	var v = ModuleEvaluate.evaluate(board);
+	if(deep <= 0 || ModuleWinnerCheck.checkWinnerInAiController(board, color))
 		return v;
 
 	var best = MIN;
-	var points = generateAllNextPossibleMove(wrapBoard(board), color);
+	var points = StepGenerator.generateAllNextPossibleMove(StepGenerator.copyAndWrapBoard(board), color);
 
 	for( var i = 0; i < points.length; i++){
 		var p = points[i];
 		board[p[0]][p[1]] = color;
-		var v = min(board, Math.abs(color-1), deep-1);
+		var v = min(board, Math.abs(color-1), alpha, beta, deep-1);
 		board[p[0]][p[1]] = 'e';
 		if(v > best)
 			best = v;
 	}
 
 	return best;
-}
+};
 
 //min函数
-var min = function(board, color, deep){
-	var v = evaluate(board);
-	if(deep <= 0)
+var min = function(board, color, alpha, beta, deep){
+	var v = ModuleEvaluate.evaluate(board);
+	if(deep <= 0 || ModuleWinnerCheck.checkWinnerInAiController(board, color))
 		return v;
 
 	var best = MAX;
-	var points = generateAllNextPossibleMove(wrapBoard(board), color);
+	var points = StepGenerator.generateAllNextPossibleMove(StepGenerator.copyAndWrapBoard(board), color);
 
 	for( var i = 0; i < points.length; i++){
 		var p = points[i];
 		board[p[0]][p[1]] = color;
-		var v = max(board, Math.abs(color-1), deep-1);
+		var v = max(board, Math.abs(color-1), alpha, beta, deep-1);
 		board[p[0]][p[1]] = 'e';
 		if(v < best)
 			best = v;
 	}
 
 	return best;
-}
+};
