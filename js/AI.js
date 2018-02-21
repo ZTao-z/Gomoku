@@ -35,15 +35,14 @@ let UtilMethods = {
     },
     // like this 'b' 'e' 'b'
     hasTwoStepNeighbour(board, color, rowPos, colPos){
-        /*return (board[rowPos-2][colPos-2] == color) ||
+        return (board[rowPos-2][colPos-2] == color) ||
             (board[rowPos-2][colPos] == color) ||
             (board[rowPos-2][colPos+2] == color) ||
             (board[rowPos][colPos-2] == color) ||
             (board[rowPos][colPos+2] == color) ||
             (board[rowPos+2][colPos-2] == color) ||
             (board[rowPos+2][colPos] == color) ||
-            (board[rowPos+2][colPos+2] == color);*/
-        return false;
+            (board[rowPos+2][colPos+2] == color);
     }
 }
 

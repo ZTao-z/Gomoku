@@ -12,6 +12,8 @@ const MAX = Number.POSITIVE_INFINITY;
 var alpha = Number.NEGATIVE_INFINITY,
 	beta = Number.POSITIVE_INFINITY;
 
+var pointCounter = 0;
+
 //board 当前棋盘, deep 思考步数
 var FunctionMaxMin = function(board, color, deep) {
 	var best = MIN;
@@ -26,6 +28,8 @@ var FunctionMaxMin = function(board, color, deep) {
 
 		var value = min(boardTemp, Math.abs(color-1), alpha, beta, deep-1);
 
+		pointCounter++;
+
 		if(value == best){
 			bestPoints.push(now_point);
 		}
@@ -39,7 +43,7 @@ var FunctionMaxMin = function(board, color, deep) {
 		}
 		boardTemp[now_point[0]+2][now_point[1]+2] = 'e'; 
 	}
-	console.log(bestPoints.length);
+	console.log("搜索节点数："+pointCounter);
 	var result = bestPoints[Math.floor(Math.random() * bestPoints.length)];
 	if(result == undefined)
 		return [];
@@ -56,16 +60,19 @@ var max = function(board, color, alpha, beta, deep){
 	var points = StepGenerator.generateAllNextPossibleMove(board, color);
 
 	for( var i = 0; i < points.length; i++){
+
+		pointCounter++;
+
 		var p = points[i];
 		board[p[0]+2][p[1]+2] = color;
-		var v = min(board, Math.abs(color-1), alpha, beta, deep-1);
+		var v = min(board, Math.abs(color-1), alpha, best > beta? best : beta, deep-1);
 		board[p[0]+2][p[1]+2] = 'e';
 		if(v > best)
 			best = v;
-		if(v > alpha)
-			alpha = v;
-		if(beta <= alpha)
+		if(v > alpha)  
 			break;
+		//alpha：上一层（min层）的当前最小值，v：当前层（mx层）的下一层的最小值
+		/*我方在当前位置的下子，应当使对方紧接着的下子所产生的优势不超过对方上一步下子所产生的优势*/
 	}
 
 	return best;
@@ -81,16 +88,19 @@ var min = function(board, color, alpha, beta, deep){
 	var points = StepGenerator.generateAllNextPossibleMove(board, color);
 
 	for( var i = 0; i < points.length; i++){
+
+		pointCounter++;
+
 		var p = points[i];
 		board[p[0]+2][p[1]+2] = color;
-		var v = max(board, Math.abs(color-1), alpha, beta, deep-1);
+		var v = max(board, Math.abs(color-1), best < alpha? best : alpha, beta, deep-1);
 		board[p[0]+2][p[1]+2] = 'e';
 		if(v < best)
 			best = v;
 		if(v < beta)
-			beta = v;
-		if(beta <= alpha)
 			break;
+		//beta：上一层（max层）的当前最大值，v：当前层（min层）的下一层的最大值
+		/*对方在当前位置的下子，应当使我方紧接着的下子所产生的优势超过我方上一步下子所产生的优势*/
 	}
 
 	return best;
