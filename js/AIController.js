@@ -26,13 +26,6 @@ var FunctionMaxMin = function(board, color, deep) {
 
 		var value = min(boardTemp, Math.abs(color-1), alpha, beta, deep-1);
 
-		if(value > best)
-			best = value;
-		if(value > alpha)
-			alpha = best;
-		if(beta <= alpha)
-			break;
-
 		if(value == best){
 			bestPoints.push(now_point);
 		}
