@@ -8,8 +8,8 @@ generateAllNextPossibleMove(wrapBoard(matrix), color) //落子位置函数
 
 const MIN = -4294967295;
 const MAX = 4294967295;
-var alpha = 0,
-	beta = 0;
+var alpha = Number.NEGATIVE_INFINITY,
+	beta = Number.POSITIVE_INFINITY;
 
 //board 当前棋盘, deep 思考步数
 var FunctionMaxMin = function(board, color, deep) {
@@ -59,6 +59,10 @@ var max = function(board, color, alpha, beta, deep){
 		board[p[0]][p[1]] = 'e';
 		if(v > best)
 			best = v;
+		if(v > alpha)
+			alpha = v;
+		if(beta <= alpha)
+			break;
 	}
 
 	return best;
@@ -80,6 +84,10 @@ var min = function(board, color, alpha, beta, deep){
 		board[p[0]][p[1]] = 'e';
 		if(v < best)
 			best = v;
+		if(v < beta)
+			beta = v;
+		if(beta <= alpha)
+			break;
 	}
 
 	return best;
