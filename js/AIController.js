@@ -20,6 +20,7 @@ var FunctionMaxMin = function(board, color, deep) {
 	//console.log(board);
 	var boardTemp = StepGenerator.copyAndWrapBoard(board);
 	var points = StepGenerator.generateAllNextPossibleMove(boardTemp, color);
+	//console.log(points);
 	var bestPoints = [];
 	//console.log(points);
 	for(var i = 0; i < points.length; i++){
@@ -86,6 +87,9 @@ var min = function(board, color, alpha, beta, deep){
 
 	var best = MAX;
 	var points = StepGenerator.generateAllNextPossibleMove(board, color);
+	/*console.log("******");
+	console.log(points);
+	console.log("******");*/
 
 	for( var i = 0; i < points.length; i++){
 
