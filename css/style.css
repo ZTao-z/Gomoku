@@ -1,8 +1,7 @@
 #chessBoard {
     width: 484px;
     height: 482px;
-    border: 1px solid red;
-    /*background-image: url('../photo/chessboard.png');*/
+    border: 0px solid red;
     background-repeat: no-repeat;
     background-size: auto;
     position: relative;
@@ -15,12 +14,14 @@
     border: 1px solid blue;
     position: relative;
     margin: 5px auto;
-    background-color: brown;
+    background-color: rgba(236,179,124,1);
+    background-image: url('../photo/2.png');
+    opacity: 0.8;
 }
 
 #record {
     width: 200px;
-    height: 300px;
+    height: 150px;
     border: 1px solid black;
     position: relative;
     margin: 20px auto;
@@ -31,14 +32,13 @@
 .chess {
     width: 20px;
     height: 20px;
-    border: 1px solid;
+    border: 0px solid;
     border-radius: 50px;
+    background-color: unset;
     display: inline-block;
     position: absolute;
-    opacity: 0.8;
     cursor: pointer;
 }
-
 
 .blackChess {
     border-color: black;
@@ -48,4 +48,8 @@
 .whiteChess {
     border-color: white;
     background-color: white;
+}
+
+.active {
+    box-shadow: 0px 0px 2px 2px rgba(0,128,255,1);
 }

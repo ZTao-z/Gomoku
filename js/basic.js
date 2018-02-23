@@ -2,6 +2,8 @@ var black_or_white = "black";
 var list = document.getElementsByClassName('chess');
 var map;
 var is_win = false;
+var mode = "PvE";
+var chessRecord = [];
 
 var playMode = {
     "PvP": {
@@ -90,30 +92,34 @@ window.onload = function() {
         list[i].onclick = operate;
     }
     is_win = false;
-    $("#112").click(); //默认初始下子位置，黑棋
+    if(mode == "PvE")
+        $("#112").click(); //默认初始下子位置，黑棋
 }
 
 var operate = function() {
     //alert($(this).attr("check"));
     var num = parseInt($(this).attr("id"));
+    chessRecord.push(num);
     if($(this).attr("check") === "true" || is_win)
         return;
     $(this).attr("check", true);
     
     if(black_or_white == "black"){
         createRecord("black", ModuleWinnerCheck.checkWinner(1, num));
-        $(this).addClass("blackChess");
+        $("#"+chessRecord[chessRecord.length-2]).removeClass('active');
+        $(this).addClass("blackChess").addClass("active");
         black_or_white = "white";
         $("#record").scrollTop(document.getElementById('record').scrollHeight);
-        setTimeout('playModeController("PvE", "black")', 500); //当前颜色
+        setTimeout('playModeController(mode, "black")', 500); //当前颜色
         return;
     }
     else{
         createRecord("white", ModuleWinnerCheck.checkWinner(0, num));
-        $(this).addClass("whiteChess");
+        $("#"+chessRecord[chessRecord.length-2]).removeClass('active');
+        $(this).addClass("whiteChess").addClass("active");
         black_or_white = "black";
         $("#record").scrollTop(document.getElementById('record').scrollHeight);
-        setTimeout('playModeController("PvE", "white")', 500);
+        setTimeout('playModeController(mode, "white")', 500);
         return;
     }
     

@@ -1,24 +1,24 @@
 'use strict';
 
 const judge_standard = {
-	//连五
-	FIVE: 100000,
-	//活四
-	FOUR: 10000,
-	//活三
-	THREE: 1000,
-	//活二
-	TWO: 100,
-	//活一
-	ONE: 10,
-	//眠四
-	BLOCK_FOUR: 1000,
-	//眠三
-	BLOCK_THREE: 100,
-	//眠二
-	BLOCK_TWO: 10,
-	//眠一
-	BLOCK_ONE: 1
+    //连五
+    FIVE: 300000,
+    //活四
+    FOUR: 10000,
+    //活三
+    THREE: 1000,
+    //活二
+    TWO: 100,
+    //活一
+    ONE: 10,
+    //眠四
+    BLOCK_FOUR: 1000,
+    //眠三
+    BLOCK_THREE: 100,
+    //眠二
+    BLOCK_TWO: 10,
+    //眠一
+    BLOCK_ONE: 1
 };
 
 var ModuleEvaluate = {
@@ -105,7 +105,7 @@ var ModuleEvaluate = {
 
     //b代表边界，e代表空位，color代表当前颜色，ncolor代表相反的颜色
     _regExpConstructor: function ( chessColor ){
-        var regex = new Array(28);
+        var regex = new Array(29);
         var color = parseInt(chessColor);
         var ncolor = color == 1? 0 : 1;
 
@@ -120,32 +120,33 @@ var ModuleEvaluate = {
         regex[5] = new RegExp(color+'e'+color+''+color+''+color, 'g');
         regex[6] = new RegExp(color+''+color+''+color+'e'+color, 'g');
         //活三
-        regex[7] = new RegExp('e'+color+''+color+''+color+'e', 'g');
+        regex[7] = new RegExp('e'+'e'+color+''+color+''+color+'e'+'e', 'g');
         regex[8] = new RegExp('e'+color+'e'+color+''+color+'e', 'g');
         regex[9] = new RegExp('e'+color+''+color+'e'+color+'e', 'g');
         //眠三
-        regex[10] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+''+color+'e'+'e', 'g');
-        regex[11] = new RegExp('e'+'e'+color+''+color+''+color+''+('('+ncolor+'|b)'), 'g');
-        regex[12] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+color+'e', 'g');
-        regex[13] = new RegExp('e'+color+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
-        regex[14] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+''+color+'e', 'g');
-        regex[15] = new RegExp('e'+color+''+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
+        regex[10] = new RegExp(('('+ncolor+'|b)')+'e'+color+''+color+''+color+'e'+('('+ncolor+'|b)'), 'g');
+        regex[11] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+''+color+'e'+'e', 'g');
+        regex[12] = new RegExp('e'+'e'+color+''+color+''+color+''+('('+ncolor+'|b)'), 'g');
+        regex[13] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+color+'e', 'g');
+        regex[14] = new RegExp('e'+color+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
+        regex[15] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+''+color+'e', 'g');
+        regex[16] = new RegExp('e'+color+''+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
         //活二
-        regex[16] = new RegExp('e'+'e'+color+color+'e'+'e', 'g');
-        regex[17] = new RegExp('e'+color+'e'+color+'e', 'g');
-        regex[18] = new RegExp('e'+color+'e'+'e'+color+'e', 'g');
+        regex[17] = new RegExp('e'+'e'+color+color+'e'+'e', 'g');
+        regex[18] = new RegExp('e'+color+'e'+color+'e', 'g');
+        regex[19] = new RegExp('e'+color+'e'+'e'+color+'e', 'g');
         //眠二
-        regex[19] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+'e'+'e', 'g');
-        regex[20] = new RegExp('e'+'e'+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
-        regex[21] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+'e'+'e', 'g');
-        regex[22] = new RegExp('e'+'e'+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
-        regex[23] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+'e'+color+'e', 'g');
-        regex[24] = new RegExp('e'+color+'e'+'e'+color+''+('('+ncolor+'|b)'), 'g');
+        regex[20] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+'e'+'e', 'g');
+        regex[21] = new RegExp('e'+'e'+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
+        regex[22] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+'e'+'e', 'g');
+        regex[23] = new RegExp('e'+'e'+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
+        regex[24] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+'e'+color+'e', 'g');
+        regex[25] = new RegExp('e'+color+'e'+'e'+color+''+('('+ncolor+'|b)'), 'g');
         //活一
-        regex[25] = new RegExp('e'+color+'e', 'g');
+        regex[26] = new RegExp('e'+color+'e', 'g');
         //眠一
-        regex[26] = new RegExp(('('+ncolor+'|b)')+''+color+'e', 'g');
-        regex[27] = new RegExp('e'+color+('('+ncolor+'|b)'), 'g')
+        regex[27] = new RegExp(('('+ncolor+'|b)')+''+color+'e', 'g');
+        regex[28] = new RegExp('e'+color+('('+ncolor+'|b)'), 'g')
 
         //console.log(regex);
 
@@ -156,7 +157,7 @@ var ModuleEvaluate = {
         var count = 0;
         var size = 0; 
         for( var i = 0; i < 4; i++){
-            for(var j = 0; j < 28; j++){
+            for(var j = 0; j < 29; j++){
                 size = strList[i].match(regExpList[j]) == null? 0: strList[i].match(regExpList[j]).length;
                 if(j == 0){
                     count += (size) * judge_standard.FIVE;
@@ -166,20 +167,22 @@ var ModuleEvaluate = {
                 }
                 else if(j >= 2 && j <= 6){
                     count += (size) * judge_standard.BLOCK_FOUR;
+                    if( j >= 4)
+                        count += (size) * judge_standard.FOUR / 5;
                 }
                 else if(j >= 7 && j <= 9){
                     count += (size) * judge_standard.THREE;
                 }
-                else if(j >= 10 && j <= 15){
+                else if(j >= 10 && j <= 16){
                     count += (size) * judge_standard.BLOCK_THREE;
                 }
-                else if(j >= 16 && j <= 18){
+                else if(j >= 17 && j <= 19){
                     count += (size) * judge_standard.TWO;
                 }
-                else if(j >= 19 && j <= 24){
+                else if(j >= 20 && j <= 25){
                     count += (size) * judge_standard.BLOCK_TWO;
                 }
-                else if(j == 25){
+                else if(j == 26){
                     count += (size) * judge_standard.ONE;
                 }
                 else{
@@ -189,6 +192,16 @@ var ModuleEvaluate = {
             }
         }
         return count;
+    },
+
+    pointEvaluate: function( matrix, position, color) {
+        if(color == 1){
+            return this._pointCounter(this._pointDirection(position[0], position[1], matrix), BLACK_REG);
+        }
+        else{
+            return this._pointCounter(this._pointDirection(position[0], position[1], matrix), WHITE_REG);
+        }
+
     },
 
     evaluate: function( matrix ){
