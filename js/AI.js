@@ -80,34 +80,8 @@ StepGenerator.copyAndWrapBoard = (function(){
 // ]
 
 // range: [0,15)
-StepGenerator.generateAllNextPossibleMove = function(wrappedBoard, color){
-    let oneStepNeighbours = [],
-        twoStepNeighbours = [];
-    
-    let rowEnd = Constants.ChessBoard.ROW_NUM + 2,
-        colEnd = Constants.ChessBoard.COL_NUM + 2;
-    
-    var new_board = new Array(15);
-    for(var i = 0; i < 15; i++)
-        new_board[i] = new Array(15);
 
-    //console.log(wrappedBoard);
-    for(let i = 2; i < rowEnd; i++){
-        for(let j = 2; j < colEnd; j++){
-            new_board[i-2][j-2] = wrappedBoard[i][j];
-            
-            if(UtilMethods.isPositionEmpty(wrappedBoard, i, j)){
-                if(UtilMethods.hasOneStepNeighbour(wrappedBoard, i, j)){
-                    oneStepNeighbours.push([i-2, j-2]);
-                }else if(UtilMethods.hasTwoStepNeighbour(wrappedBoard, i, j)){
-                    twoStepNeighbours.push([i-2, j-2]);
-                }
-            }
-        }
-    }
-
-    var originalList = [...oneStepNeighbours, ...twoStepNeighbours];
-    //return originalList;
+var pointsFilter = function(new_board, originalList, color){
     var fives = [];
     var fours = [];
     var twothrees = [];
@@ -156,6 +130,36 @@ StepGenerator.generateAllNextPossibleMove = function(wrappedBoard, color){
     if(twothrees.length)
         return twothrees;
     return [...threes, ...twos, ...neighbors];
+};
+
+StepGenerator.generateAllNextPossibleMove = function(wrappedBoard, color){
+    let oneStepNeighbours = [],
+        twoStepNeighbours = [];
+    
+    let rowEnd = Constants.ChessBoard.ROW_NUM + 2,
+        colEnd = Constants.ChessBoard.COL_NUM + 2;
+    
+    var new_board = new Array(15);
+    for(var i = 0; i < 15; i++)
+        new_board[i] = new Array(15);
+
+    //console.log(wrappedBoard);
+    for(let i = 2; i < rowEnd; i++){
+        for(let j = 2; j < colEnd; j++){
+            new_board[i-2][j-2] = wrappedBoard[i][j];
+            
+            if(UtilMethods.isPositionEmpty(wrappedBoard, i, j)){
+                if(UtilMethods.hasOneStepNeighbour(wrappedBoard, i, j)){
+                    oneStepNeighbours.push([i-2, j-2]);
+                }else if(UtilMethods.hasTwoStepNeighbour(wrappedBoard, i, j)){
+                    twoStepNeighbours.push([i-2, j-2]);
+                }
+            }
+        }
+    }
+
+    var originalList = [...oneStepNeighbours, ...twoStepNeighbours];
+    return pointsFilter(new_board, originalList, color);
 }
 
 return StepGenerator;
