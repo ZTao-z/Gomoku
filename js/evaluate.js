@@ -105,7 +105,7 @@ var ModuleEvaluate = {
 
     //b代表边界，e代表空位，color代表当前颜色，ncolor代表相反的颜色
     _regExpConstructor: function ( chessColor ){
-        var regex = new Array(29);
+        var regex = new Array(31);
         var color = parseInt(chessColor);
         var ncolor = color == 1? 0 : 1;
 
@@ -121,32 +121,34 @@ var ModuleEvaluate = {
         regex[6] = new RegExp(color+''+color+''+color+'e'+color, 'g');
         //活三
         regex[7] = new RegExp('e'+'e'+color+''+color+''+color+'e'+'e', 'g');
-        regex[8] = new RegExp('e'+color+'e'+color+''+color+'e', 'g');
-        regex[9] = new RegExp('e'+color+''+color+'e'+color+'e', 'g');
+        regex[8] = new RegExp(('('+ncolor+'|b)')+'e'+color+''+color+''+color+'e'+'e', 'g');
+        regex[9] = new RegExp('e'+'e'+color+''+color+''+color+'e'+('('+ncolor+'|b)'), 'g');
+        regex[10] = new RegExp('e'+color+'e'+color+''+color+'e', 'g');
+        regex[11] = new RegExp('e'+color+''+color+'e'+color+'e', 'g');
         //眠三
-        regex[10] = new RegExp(('('+ncolor+'|b)')+'e'+color+''+color+''+color+'e'+('('+ncolor+'|b)'), 'g');
-        regex[11] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+''+color+'e'+'e', 'g');
-        regex[12] = new RegExp('e'+'e'+color+''+color+''+color+''+('('+ncolor+'|b)'), 'g');
-        regex[13] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+color+'e', 'g');
-        regex[14] = new RegExp('e'+color+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
-        regex[15] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+''+color+'e', 'g');
-        regex[16] = new RegExp('e'+color+''+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
+        regex[12] = new RegExp(('('+ncolor+'|b)')+'e'+color+''+color+''+color+'e'+('('+ncolor+'|b)'), 'g');
+        regex[13] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+''+color+'e'+'e', 'g');
+        regex[14] = new RegExp('e'+'e'+color+''+color+''+color+''+('('+ncolor+'|b)'), 'g');
+        regex[15] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+color+'e', 'g');
+        regex[16] = new RegExp('e'+color+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
+        regex[17] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+''+color+'e', 'g');
+        regex[18] = new RegExp('e'+color+''+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
         //活二
-        regex[17] = new RegExp('e'+'e'+color+color+'e'+'e', 'g');
-        regex[18] = new RegExp('e'+color+'e'+color+'e', 'g');
-        regex[19] = new RegExp('e'+color+'e'+'e'+color+'e', 'g');
+        regex[19] = new RegExp('e'+'e'+color+color+'e'+'e', 'g');
+        regex[20] = new RegExp('e'+color+'e'+color+'e', 'g');
+        regex[21] = new RegExp('e'+color+'e'+'e'+color+'e', 'g');
         //眠二
-        regex[20] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+'e'+'e', 'g');
-        regex[21] = new RegExp('e'+'e'+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
-        regex[22] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+'e'+'e', 'g');
-        regex[23] = new RegExp('e'+'e'+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
-        regex[24] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+'e'+color+'e', 'g');
-        regex[25] = new RegExp('e'+color+'e'+'e'+color+''+('('+ncolor+'|b)'), 'g');
+        regex[22] = new RegExp(('('+ncolor+'|b)')+''+color+''+color+'e'+'e'+'e', 'g');
+        regex[23] = new RegExp('e'+'e'+'e'+color+''+color+''+('('+ncolor+'|b)'), 'g');
+        regex[24] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+color+'e'+'e', 'g');
+        regex[25] = new RegExp('e'+'e'+color+'e'+color+''+('('+ncolor+'|b)'), 'g');
+        regex[26] = new RegExp(('('+ncolor+'|b)')+''+color+'e'+'e'+color+'e', 'g');
+        regex[27] = new RegExp('e'+color+'e'+'e'+color+''+('('+ncolor+'|b)'), 'g');
         //活一
-        regex[26] = new RegExp('e'+color+'e', 'g');
+        regex[28] = new RegExp('e'+color+'e', 'g');
         //眠一
-        regex[27] = new RegExp(('('+ncolor+'|b)')+''+color+'e', 'g');
-        regex[28] = new RegExp('e'+color+('('+ncolor+'|b)'), 'g')
+        regex[29] = new RegExp(('('+ncolor+'|b)')+''+color+'e', 'g');
+        regex[30] = new RegExp('e'+color+('('+ncolor+'|b)'), 'g')
 
         //console.log(regex);
 
@@ -157,7 +159,7 @@ var ModuleEvaluate = {
         var count = 0;
         var size = 0; 
         for( var i = 0; i < 4; i++){
-            for(var j = 0; j < 29; j++){
+            for(var j = 0; j < 31; j++){
                 size = strList[i].match(regExpList[j]) == null? 0: strList[i].match(regExpList[j]).length;
                 if(j == 0){
                     count += (size) * judge_standard.FIVE;
@@ -170,19 +172,19 @@ var ModuleEvaluate = {
                     if( j >= 4)
                         count += (size) * judge_standard.FOUR / 5;
                 }
-                else if(j >= 7 && j <= 9){
+                else if(j >= 7 && j <= 11){
                     count += (size) * judge_standard.THREE;
                 }
-                else if(j >= 10 && j <= 16){
+                else if(j >= 12 && j <= 18){
                     count += (size) * judge_standard.BLOCK_THREE;
                 }
-                else if(j >= 17 && j <= 19){
+                else if(j >= 19 && j <= 21){
                     count += (size) * judge_standard.TWO;
                 }
-                else if(j >= 20 && j <= 25){
+                else if(j >= 22 && j <= 27){
                     count += (size) * judge_standard.BLOCK_TWO;
                 }
-                else if(j == 26){
+                else if(j == 28){
                     count += (size) * judge_standard.ONE;
                 }
                 else{
