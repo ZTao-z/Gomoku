@@ -2,7 +2,7 @@
 外部函数 
 
 evaluate(matrix) //评估函数
-generateAllNextPossibleMove(wrapBoard(matrix), color) //落子位置函数
+generateAllNextPossibleMove(matrix, color) //落子位置函数
 
 */
 
@@ -11,6 +11,9 @@ const MAX = Number.POSITIVE_INFINITY;
 
 var alpha = Number.NEGATIVE_INFINITY,
 	beta = Number.POSITIVE_INFINITY;
+
+var alphaMultiple = 0.1,
+	betaMultiple = 10;
 
 var pointCounter = 0;
 
@@ -66,7 +69,7 @@ var max = function(board, color, alpha, beta, deep){
 
 		var p = points[i];
 		board[p[0]+2][p[1]+2] = color;
-		var v = min(board, Math.abs(color-1), alpha, best > beta? best : beta, deep-1);
+		var v = min(board, Math.abs(color-1), alpha, best > betaMultiple*beta? best : beta, deep-1);
 		board[p[0]+2][p[1]+2] = 'e';
 		if(v > best)
 			best = v;
@@ -87,9 +90,6 @@ var min = function(board, color, alpha, beta, deep){
 
 	var best = MAX;
 	var points = StepGenerator.generateAllNextPossibleMove(board, color);
-	/*console.log("******");
-	console.log(points);
-	console.log("******");*/
 
 	for( var i = 0; i < points.length; i++){
 
@@ -97,7 +97,7 @@ var min = function(board, color, alpha, beta, deep){
 
 		var p = points[i];
 		board[p[0]+2][p[1]+2] = color;
-		var v = max(board, Math.abs(color-1), best < alpha? best : alpha, beta, deep-1);
+		var v = max(board, Math.abs(color-1), best < alphaMultiple*alpha? best : alpha, beta, deep-1);
 		board[p[0]+2][p[1]+2] = 'e';
 		if(v < best)
 			best = v;
