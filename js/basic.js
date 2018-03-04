@@ -2,8 +2,12 @@ var black_or_white = "black";
 var list = document.getElementsByClassName('chess');
 var map;
 var is_win = false;
+//游戏模式(PVP || PVE)
 var mode = "PvE";
+//下棋位置记录
 var chessRecord = [];
+//难度设置（1-6）
+var difficultLevel = 6;
 
 var playMode = {
     "PvP": {
@@ -33,7 +37,7 @@ var playModeController = function(Mode, color) {
             return;
         }
         if(playingMode.computer && !playingMode.human){
-            var point = FunctionMaxMin(map, Math.abs(color-1), 4);
+            var point = FunctionMaxMin(map, Math.abs(color-1), difficultLevel);
             console.log(point);
             playingMode.human = !playingMode.human;
             playingMode.computer = !playingMode.computer;
@@ -99,9 +103,10 @@ window.onload = function() {
 var operate = function() {
     //alert($(this).attr("check"));
     var num = parseInt($(this).attr("id"));
-    chessRecord.push(num);
+    
     if($(this).attr("check") === "true" || is_win)
         return;
+    chessRecord.push(num);
     $(this).attr("check", true);
     
     if(black_or_white == "black"){
